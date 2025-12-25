@@ -27,6 +27,7 @@ export function MapView({ lat, lon, city }: MapViewProps) {
 
     const initMap = async () => {
       const L = (await import('leaflet')).default;
+      // @ts-ignore - CSS import for styling
       await import('leaflet/dist/leaflet.css');
 
       if (!isMounted || !mapRef.current) return;
