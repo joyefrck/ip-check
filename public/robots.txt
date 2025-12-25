@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# 允许所有搜索引擎抓取
+Disallow: /api/
+
+# 特定搜索引擎
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+# Sitemap位置
+Sitemap: http://localhost:3000/sitemap.xml

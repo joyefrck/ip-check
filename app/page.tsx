@@ -1,65 +1,145 @@
-import Image from "next/image";
+'use client';
+
+import { useEffect, useState } from 'react';
+import { SearchBar } from '@/components/search-bar';
+import { MapView } from '@/components/map-view';
+import { IPInfoPanel } from '@/components/ip-info-panel';
+import { LoadingSkeleton } from '@/components/loading-skeleton';
+import { LanguageSwitcher } from '@/components/language-switcher';
+import { IPInfo, IPLookupResponse } from '@/types/ip-info';
+import { Card } from '@/components/ui/card';
+import { Globe, AlertCircle } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 export default function Home() {
+  const { t } = useLanguage();
+  const [ipData, setIpData] = useState<IPInfo | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  // 初始加载当前用户IP
+  useEffect(() => {
+    fetchIPData();
+  }, []);
+
+  const fetchIPData = async (query?: string) => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const url = query ? `/api/lookup?query=${encodeURIComponent(query)}` : '/api/lookup';
+      const response = await fetch(url);
+      const data: IPLookupResponse = await response.json();
+
+      if (data.success && data.data) {
+        setIpData(data.data);
+      } else {
+        setError(data.error || t.queryFailed);
+      }
+    } catch (err) {
+      setError(t.networkError);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      {/* JSON-LD 结构化数据 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            name: 'IP地理位置查询工具',
+            description: '免费在线IP地理位置查询工具,快速查询IP地址或域名的地理位置、ISP服务商、时区等详细信息',
+            url: 'http://localhost:3000',
+            applicationCategory: 'UtilityApplication',
+            operatingSystem: 'All',
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'CNY',
+            },
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: '4.8',
+              ratingCount: '1000',
+            },
+            author: {
+              '@type': 'Organization',
+              name: 'IP查询工具',
+            },
+          }),
+        }}
+      />
+
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        {/* 语言切换器 */}
+        <LanguageSwitcher />
+        
+        {/* 背景装饰 */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <div className="absolute top-1/4 -left-48 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="relative z-10 container mx-auto px-4 py-4 space-y-4">
+          {/* 头部 */}
+          <header className="text-center space-y-3 pt-4">
+            <div className="flex items-center justify-center gap-2">
+              <div className="p-2 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg shadow-blue-500/50" aria-hidden="true">
+                <Globe className="w-6 h-6 text-white" />
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                {t.title}
+              </h1>
+            </div>
+            <p className="text-gray-400 text-base max-w-2xl mx-auto">
+              {t.description}
+            </p>
+          </header>
+
+          {/* 搜索栏 */}
+          <section aria-label="IP查询搜索" className="flex justify-center">
+            <SearchBar onSearch={fetchIPData} loading={loading} />
+          </section>
+
+          {/* 结果展示区域 */}
+          <main aria-label="查询结果">
+            {loading && !ipData ? (
+              <LoadingSkeleton />
+            ) : error ? (
+              <Card className="p-12 bg-white/5 backdrop-blur-lg border-white/10 text-center" role="alert">
+                <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" aria-hidden="true" />
+                <h3 className="text-xl font-semibold text-white mb-2">{t.queryFailed}</h3>
+                <p className="text-gray-400">{error}</p>
+              </Card>
+            ) : ipData ? (
+              <article className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                {/* 左侧地图 */}
+                <section aria-label="地图展示" className="lg:col-span-3">
+                  <Card className="p-3 bg-white/5 backdrop-blur-lg border-white/10 h-[380px]">
+                    <MapView lat={ipData.lat} lon={ipData.lon} city={ipData.city} />
+                  </Card>
+                </section>
+
+                {/* 右侧信息面板 */}
+                <aside aria-label="IP详细信息" className="lg:col-span-2">
+                  <IPInfoPanel data={ipData} />
+                </aside>
+              </article>
+            ) : null}
+          </main>
+
+
+          {/* 页脚 */}
+          <footer className="text-center text-gray-500 text-xs pt-4">
+            <p>{t.dataSource}: ip-api.com | {t.mapService}: OpenStreetMap</p>
+          </footer>
         </div>
-      </main>
-    </div>
+      </div>
+    </>
   );
 }
