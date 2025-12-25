@@ -19,12 +19,14 @@
 
 ```bash
 # 克隆项目
-git clone <repository-url>
+git clone https://github.com/你的用户名/IP-Check.git
 cd IP-Check
 
 # 运行一键部署脚本
 ./deploy.sh
 ```
+
+> 💡 **提示**：将 `你的用户名` 替换为你的 GitHub 用户名
 
 部署脚本会自动完成以下操作：
 - ✓ 检查 Docker 环境
@@ -63,6 +65,10 @@ docker ps
 # 重新构建并启动
 docker-compose up -d --build
 ```
+
+#### 使用 1Panel 部署
+
+如果你使用 1Panel 面板管理服务器，请查看详细的 [1Panel 部署指南](docs/1panel-deployment.md)。
 
 ---
 
