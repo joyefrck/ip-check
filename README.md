@@ -19,14 +19,12 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/你的用户名/IP-Check.git
-cd IP-Check
+git clone https://github.com/joyefrck/ip-check.git
+cd ip-check
 
 # 运行一键部署脚本
 ./deploy.sh
 ```
-
-> 💡 **提示**：将 `你的用户名` 替换为你的 GitHub 用户名
 
 部署脚本会自动完成以下操作：
 - ✓ 检查 Docker 环境
@@ -38,6 +36,10 @@ cd IP-Check
 #### 手动部署
 
 ```bash
+# 克隆项目（如果还没有）
+git clone https://github.com/joyefrck/ip-check.git
+cd ip-check
+
 # 使用 docker-compose
 docker-compose up -d
 

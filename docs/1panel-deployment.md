@@ -29,7 +29,7 @@
 cd /opt/1panel/apps/
 
 # 从 GitHub 克隆项目
-git clone https://github.com/你的用户名/IP-Check.git ip-check
+git clone https://github.com/joyefrck/ip-check.git ip-check
 
 # 进入项目目录
 cd ip-check
@@ -43,7 +43,7 @@ ssh root@你的服务器IP
 
 # 克隆项目
 cd /opt/1panel/apps/
-git clone https://github.com/你的用户名/IP-Check.git ip-check
+git clone https://github.com/joyefrck/ip-check.git ip-check
 cd ip-check
 ```
 
