@@ -120,7 +120,7 @@ export default function Home() {
               <article className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 {/* 左侧地图 */}
                 <section aria-label="地图展示" className="lg:col-span-3">
-                  <Card className="p-3 bg-white/5 backdrop-blur-lg border-white/10 h-[380px]">
+                  <Card className="p-3 bg-white/5 backdrop-blur-lg border-white/10 h-full">
                     <MapView lat={ipData.lat} lon={ipData.lon} city={ipData.city} />
                   </Card>
                 </section>
