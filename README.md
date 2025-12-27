@@ -8,6 +8,7 @@
 - 🏢 ISP 信息识别
 - 🌐 多语言支持（中文/英文）
 - 🗺️ 可视化地图展示
+- 📊 Google Analytics 访问统计
 - 🐳 Docker 一键部署
 
 ## 快速开始
@@ -119,6 +120,9 @@ cp .env.example .env
 |------|------|--------|
 | `PORT` | 应用端口 | `3000` |
 | `NODE_ENV` | 运行环境 | `production` |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 测量 ID | - |
+
+> 💡 **提示**: 关于 Google Analytics 的详细配置，请查看 [Google Analytics 接入指南](docs/google-analytics.md)。
 
 ## 技术栈
 

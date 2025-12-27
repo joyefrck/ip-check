@@ -18,6 +18,7 @@ export const zh = {
   details: '详细信息',
   longitude: '经度',
   latitude: '纬度',
+  coordinates: '经纬度',
   asn: 'ASN',
   organization: '组织',
   
@@ -33,6 +34,14 @@ export const zh = {
   // 错误消息
   networkError: '网络错误,请稍后重试',
   invalidInput: '请输入有效的IP地址或域名',
+  
+  // VPN 广告
+  vpnBannerTitle: '想要更换 IP 位置?试试 ElephantRoute VPN',
+  vpnBannerDescription: '全球节点 · 高速稳定 · 保护隐私 · 畅享全球内容',
+  vpnBannerCta: '立即体验',
+  vpnFeatureGlobal: '全球节点',
+  vpnFeatureSpeed: '高速稳定',
+  vpnFeaturePrivacy: '隐私保护',
 };
 
 export type Translations = typeof zh;

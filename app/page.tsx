@@ -6,21 +6,29 @@ import { MapView } from '@/components/map-view';
 import { IPInfoPanel } from '@/components/ip-info-panel';
 import { LoadingSkeleton } from '@/components/loading-skeleton';
 import { LanguageSwitcher } from '@/components/language-switcher';
+import { VPNBanner } from '@/components/vpn-banner';
 import { IPInfo, IPLookupResponse } from '@/types/ip-info';
 import { Card } from '@/components/ui/card';
 import { Globe, AlertCircle } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/language-context';
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [ipData, setIpData] = useState<IPInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // 更新页面标题和语言属性
+  useEffect(() => {
+    document.title = t.title + ' - ' + t.description;
+    document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
+  }, [t, language]);
 
   // 初始加载当前用户IP
   useEffect(() => {
     fetchIPData();
   }, []);
+
 
   const fetchIPData = async (query?: string) => {
     setLoading(true);
@@ -133,6 +141,8 @@ export default function Home() {
             ) : null}
           </main>
 
+          {/* VPN 广告 */}
+          <VPNBanner />
 
           {/* 页脚 */}
           <footer className="text-center text-gray-500 text-xs pt-4">

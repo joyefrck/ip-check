@@ -63,7 +63,7 @@ export function MapView({ lat, lon, city }: MapViewProps) {
       // 添加标记
       L.marker([lat, lon], { icon: customIcon })
         .addTo(map)
-        .bindPopup(`<strong>${city}</strong><br/>经纬度: ${lat.toFixed(4)}, ${lon.toFixed(4)}`)
+        .bindPopup(`<strong>${city}</strong><br/>${t.coordinates}: ${lat.toFixed(4)}, ${lon.toFixed(4)}`)
         .openPopup();
     };
 
@@ -77,7 +77,7 @@ export function MapView({ lat, lon, city }: MapViewProps) {
         mapInstanceRef.current = null;
       }
     };
-  }, [isClient, lat, lon, city]);
+  }, [isClient, lat, lon, city, t]);
 
   if (!isClient) {
     return (

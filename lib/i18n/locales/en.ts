@@ -20,6 +20,7 @@ export const en: Translations = {
   details: 'Details',
   longitude: 'Longitude',
   latitude: 'Latitude',
+  coordinates: 'Coordinates',
   asn: 'ASN',
   organization: 'Organization',
   
@@ -35,4 +36,12 @@ export const en: Translations = {
   // Error messages
   networkError: 'Network error, please try again later',
   invalidInput: 'Please enter a valid IP address or domain',
+  
+  // VPN Banner
+  vpnBannerTitle: 'Want to Change Your IP Location? Try ElephantRoute VPN',
+  vpnBannerDescription: 'Global Servers · Fast & Stable · Privacy Protection · Access Worldwide Content',
+  vpnBannerCta: 'Get Started',
+  vpnFeatureGlobal: 'Global Servers',
+  vpnFeatureSpeed: 'Fast & Stable',
+  vpnFeaturePrivacy: 'Privacy Protection',
 };
