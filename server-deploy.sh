@@ -37,8 +37,19 @@ log_error() {
 # 检查命令是否存在
 check_command() {
     if ! command -v $1 &> /dev/null; then
-        log_error "$1 未安装，请先安装 $1"
-        exit 1
+        return 1
+    fi
+    return 0
+}
+
+# 检测 Docker Compose 命令
+detect_docker_compose() {
+    if docker compose version &> /dev/null; then
+        echo "docker compose"
+    elif command -v docker-compose &> /dev/null; then
+        echo "docker-compose"
+    else
+        return 1
     fi
 }
 
@@ -46,10 +57,30 @@ check_command() {
 check_environment() {
     log_info "检查部署环境..."
     
-    check_command "git"
-    check_command "docker"
-    check_command "docker-compose"
+    # 检查 Git
+    if ! check_command "git"; then
+        log_error "Git 未安装，请先安装 Git"
+        exit 1
+    fi
     
+    # 检查 Docker
+    if ! check_command "docker"; then
+        log_error "Docker 未安装，请先安装 Docker"
+        exit 1
+    fi
+    
+    # 检查 Docker Compose
+    DOCKER_COMPOSE_CMD=$(detect_docker_compose)
+    if [ $? -ne 0 ]; then
+        log_error "Docker Compose 未安装，请先安装 Docker Compose"
+        log_info "安装方法："
+        log_info "  方法1: apt-get install docker-compose-plugin  # Ubuntu/Debian"
+        log_info "  方法2: yum install docker-compose-plugin      # CentOS/RHEL"
+        log_info "  方法3: curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose"
+        exit 1
+    fi
+    
+    log_info "检测到 Docker Compose 命令: $DOCKER_COMPOSE_CMD"
     log_info "环境检查通过 ✓"
 }
 
@@ -115,7 +146,7 @@ stop_old_container() {
     log_info "停止旧容器..."
     
     if docker ps -a | grep -q "$CONTAINER_NAME"; then
-        docker-compose down
+        $DOCKER_COMPOSE_CMD down
         log_info "旧容器已停止 ✓"
     else
         log_info "没有运行中的容器"
@@ -127,10 +158,10 @@ build_and_start() {
     log_info "构建并启动容器..."
     
     # 构建镜像
-    docker-compose build --no-cache
+    $DOCKER_COMPOSE_CMD build --no-cache
     
     # 启动容器
-    docker-compose up -d
+    $DOCKER_COMPOSE_CMD up -d
     
     log_info "容器启动完成 ✓"
 }
@@ -162,11 +193,11 @@ health_check() {
         done
         
         log_error "应用启动超时，请检查日志"
-        docker-compose logs --tail=50
+        $DOCKER_COMPOSE_CMD logs --tail=50
         return 1
     else
         log_error "容器启动失败"
-        docker-compose logs --tail=50
+        $DOCKER_COMPOSE_CMD logs --tail=50
         return 1
     fi
 }
@@ -182,9 +213,9 @@ show_info() {
     echo "部署目录: $DEPLOY_DIR"
     echo ""
     echo "常用命令:"
-    echo "  查看日志: docker-compose logs -f"
-    echo "  重启容器: docker-compose restart"
-    echo "  停止容器: docker-compose down"
+    echo "  查看日志: $DOCKER_COMPOSE_CMD logs -f"
+    echo "  重启容器: $DOCKER_COMPOSE_CMD restart"
+    echo "  停止容器: $DOCKER_COMPOSE_CMD down"
     echo "  进入容器: docker exec -it $CONTAINER_NAME sh"
     echo ""
 }
@@ -195,7 +226,7 @@ handle_error() {
     log_info "正在回滚..."
     
     # 尝试启动旧容器
-    docker-compose up -d
+    $DOCKER_COMPOSE_CMD up -d
     
     exit 1
 }
