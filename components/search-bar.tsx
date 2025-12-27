@@ -18,12 +18,8 @@ export function SearchBar({ onSearch, loading, defaultValue }: SearchBarProps) {
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
 
-  // 当defaultValue变化时,更新输入框的值
-  useEffect(() => {
-    if (defaultValue) {
-      setQuery(defaultValue);
-    }
-  }, [defaultValue]);
+  // 使用 key 属性在 defaultValue 变化时重置内部状态，而不是在 Effect 中设置状态
+  // 这避免了不必要的二次渲染
 
   const handleSearch = () => {
     setError('');

@@ -23,6 +23,7 @@ export const en: Translations = {
   coordinates: 'Coordinates',
   asn: 'ASN',
   organization: 'Organization',
+  copy: 'Click to copy',
   
   // Status messages
   queryFailed: 'Query Failed',

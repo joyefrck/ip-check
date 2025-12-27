@@ -12,7 +12,7 @@ interface MapViewProps {
 export function MapView({ lat, lon, city }: MapViewProps) {
   const { t } = useLanguage();
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
+  const mapInstanceRef = useRef<import('leaflet').Map | null>(null);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export function MapView({ lat, lon, city }: MapViewProps) {
 
     const initMap = async () => {
       const L = (await import('leaflet')).default;
-      // @ts-ignore - CSS import for styling
+      // @ts-expect-error - CSS import for styling
       await import('leaflet/dist/leaflet.css');
 
       if (!isMounted || !mapRef.current) return;
@@ -52,12 +52,12 @@ export function MapView({ lat, lon, city }: MapViewProps) {
         className: 'custom-marker',
         html: `
           <div class="relative">
-            <div class="absolute -top-10 -left-5 w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full animate-pulse shadow-lg shadow-blue-500/50"></div>
-            <div class="absolute -top-8 -left-3 w-6 h-6 bg-white rounded-full border-2 border-blue-500"></div>
+            <div class="marker-pulse"></div>
+            <div class="marker-inner"></div>
           </div>
         `,
-        iconSize: [40, 40],
-        iconAnchor: [20, 40],
+        iconSize: [48, 48],
+        iconAnchor: [24, 24],
       });
 
       // 添加标记

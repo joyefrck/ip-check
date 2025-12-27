@@ -21,6 +21,7 @@ export const zh = {
   coordinates: '经纬度',
   asn: 'ASN',
   organization: '组织',
+  copy: '点击复制',
   
   // 状态消息
   queryFailed: '查询失败',

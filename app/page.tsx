@@ -81,7 +81,7 @@ export default function Home() {
       } else {
         setError(data.error || t.queryFailed);
       }
-    } catch (err) {
+    } catch {
       setError(t.networkError);
     } finally {
       setLoading(false);

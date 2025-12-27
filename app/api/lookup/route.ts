@@ -50,33 +50,29 @@ function getClientIP(request: NextRequest): string | null {
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    let query = searchParams.get('query') || undefined;
+    let query = searchParams.get('query')?.trim() || undefined;
     
     // 如果没有指定查询参数,尝试从请求头获取客户端IP
     if (!query) {
       const clientIP = getClientIP(request);
       if (clientIP) {
         query = clientIP;
-        console.log('[IP Lookup] Using detected client IP:', clientIP);
-      } else {
-        console.log('[IP Lookup] No client IP detected, using ip-api.com auto-detection');
       }
     }
     
     const data = await lookupIP(query);
     
-    const response: IPLookupResponse = {
+    return NextResponse.json({
       success: true,
       data,
-    };
-    
-    return NextResponse.json(response);
+    } as IPLookupResponse);
   } catch (error) {
-    const response: IPLookupResponse = {
-      success: false,
-      error: error instanceof Error ? error.message : '查询失败',
-    };
+    const errorMessage = error instanceof Error ? error.message : '查询失败';
+    console.error(`[API Lookup] Failed for query:`, errorMessage);
     
-    return NextResponse.json(response, { status: 400 });
+    return NextResponse.json({
+      success: false,
+      error: errorMessage,
+    } as IPLookupResponse, { status: 400 });
   }
 }

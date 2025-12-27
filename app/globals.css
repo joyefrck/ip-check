@@ -124,6 +124,46 @@
   }
 }
 
+/* Leaflet 自定义样式 */
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.marker-inner {
+  width: 24px;
+  height: 24px;
+  background: white;
+  border: 4px solid #3b82f6;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  position: relative;
+  z-index: 2;
+}
+
+.marker-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 50%;
+  animation: marker-pulse 2s infinite;
+  z-index: 1;
+}
+
+@keyframes marker-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
 /* Leaflet地图样式 */
 @import "leaflet/dist/leaflet.css";
 
