@@ -41,10 +41,11 @@ export function MapView({ lat, lon, city }: MapViewProps) {
       const map = L.map(mapRef.current).setView([lat, lon], 10);
       mapInstanceRef.current = map;
 
-      // 添加地图图层
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-        maxZoom: 19,
+      // 添加地图图层 (使用 CartoDB Voyager, 浅色模式且在大陆访问稳定)
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20,
       }).addTo(map);
 
       // 自定义标记图标
