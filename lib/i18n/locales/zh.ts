@@ -35,6 +35,9 @@ export const zh = {
   networkError: '网络错误,请稍后重试',
   invalidInput: '请输入有效的IP地址或域名',
   
+  // 占位文本
+  unknown: '未知',
+  
   // VPN 广告
   vpnBannerTitle: '想要更换 IP 位置?试试 ElephantRoute VPN',
   vpnBannerDescription: '全球节点 · 高速稳定 · 保护隐私 · 畅享全球内容',

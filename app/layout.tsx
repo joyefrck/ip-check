@@ -8,8 +8,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "IP地理位置查询 - 快速查询IP信息和域名定位",
-    template: "%s | IP查询工具",
+    default: "IP Geolocation Lookup - Quickly query IP address or domain geolocation",
+    template: "%s",
   },
   description: "免费在线IP地理位置查询工具,快速查询IP地址或域名的地理位置、ISP服务商、时区、经纬度等详细信息。支持全球IP查询,提供精准的IP定位服务。",
   keywords: [

@@ -1,15 +1,18 @@
 import { Card } from '@/components/ui/card';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 export function LoadingSkeleton() {
+  const { t } = useLanguage();
+  
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 animate-pulse">
-      {/* 地图骨架屏 */}
+      {/* 地ata Map Skeleton */}
       <div className="lg:col-span-3">
         <Card className="h-[500px] bg-white/5 backdrop-blur-lg border-white/10">
           <div className="w-full h-full flex items-center justify-center">
             <div className="text-center space-y-4">
               <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 animate-spin" />
-              <p className="text-gray-400">加载地图中...</p>
+              <p className="text-gray-400">{t.loadingMap}</p>
             </div>
           </div>
         </Card>

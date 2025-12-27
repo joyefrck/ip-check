@@ -37,6 +37,9 @@ export const en: Translations = {
   networkError: 'Network error, please try again later',
   invalidInput: 'Please enter a valid IP address or domain',
   
+  // Placeholder text
+  unknown: 'Unknown',
+  
   // VPN Banner
   vpnBannerTitle: 'Want to Change Your IP Location? Try ElephantRoute VPN',
   vpnBannerDescription: 'Global Servers · Fast & Stable · Privacy Protection · Access Worldwide Content',

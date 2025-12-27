@@ -17,6 +17,7 @@ export default function Home() {
   const [ipData, setIpData] = useState<IPInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [currentIP, setCurrentIP] = useState('');
 
   // 更新页面标题和语言属性
   useEffect(() => {
@@ -24,9 +25,30 @@ export default function Home() {
     document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
   }, [t, language]);
 
-  // 初始加载当前用户IP
+  // 初始加载:先获取IP,再查询地理位置
   useEffect(() => {
-    fetchIPData();
+    async function initIPDetection() {
+      try {
+        setLoading(true);
+        // 1. 获取公网IP
+        const ipResponse = await fetch('/api/ip');
+        const ipData = await ipResponse.json();
+        
+        if (ipData.ip) {
+          setCurrentIP(ipData.ip);
+          // 2. 查询IP地理位置
+          await fetchIPData(ipData.ip);
+        } else {
+          throw new Error('Failed to detect IP');
+        }
+      } catch (err) {
+        console.error('[IP Detection] Error:', err);
+        setError(t.networkError);
+        setLoading(false);
+      }
+    }
+    
+    initIPDetection();
   }, []);
 
 
@@ -35,7 +57,22 @@ export default function Home() {
     setError('');
 
     try {
-      const url = query ? `/api/lookup?query=${encodeURIComponent(query)}` : '/api/lookup';
+      let targetIP = query;
+      
+      // 如果query为空字符串,先获取当前用户IP
+      if (query === '') {
+        const ipResponse = await fetch('/api/ip');
+        const ipData = await ipResponse.json();
+        
+        if (ipData.ip) {
+          targetIP = ipData.ip;
+          setCurrentIP(ipData.ip);
+        } else {
+          throw new Error('Failed to detect IP');
+        }
+      }
+      
+      const url = targetIP ? `/api/lookup?query=${encodeURIComponent(targetIP)}` : '/api/lookup';
       const response = await fetch(url);
       const data: IPLookupResponse = await response.json();
 
@@ -111,7 +148,7 @@ export default function Home() {
 
           {/* 搜索栏 */}
           <section aria-label="IP查询搜索" className="flex justify-center">
-            <SearchBar onSearch={fetchIPData} loading={loading} />
+            <SearchBar onSearch={fetchIPData} loading={loading} defaultValue={currentIP} />
           </section>
 
           {/* 结果展示区域 */}

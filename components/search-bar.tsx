@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Loader2 } from 'lucide-react';
@@ -10,21 +10,31 @@ import { useLanguage } from '@/lib/i18n/language-context';
 interface SearchBarProps {
   onSearch: (query: string) => void;
   loading: boolean;
+  defaultValue?: string;
 }
 
-export function SearchBar({ onSearch, loading }: SearchBarProps) {
+export function SearchBar({ onSearch, loading, defaultValue }: SearchBarProps) {
   const { t } = useLanguage();
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
 
+  // 当defaultValue变化时,更新输入框的值
+  useEffect(() => {
+    if (defaultValue) {
+      setQuery(defaultValue);
+    }
+  }, [defaultValue]);
+
   const handleSearch = () => {
     setError('');
     
+    // 如果输入框为空,查询当前用户IP
     if (!query.trim()) {
       onSearch('');
       return;
     }
 
+    // 验证输入格式
     if (!isValidIP(query) && !isValidDomain(query)) {
       setError(t.invalidInput);
       return;
@@ -53,7 +63,7 @@ export function SearchBar({ onSearch, loading }: SearchBarProps) {
             }}
             onKeyPress={handleKeyPress}
             disabled={loading}
-            className="h-12 pl-4 pr-12 bg-white/10 backdrop-blur-lg border-white/20 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all"
+            className="h-12 pl-4 pr-12 bg-white/10 backdrop-blur-lg border-white/20 text-white text-2xl placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all"
           />
           <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
         </div>

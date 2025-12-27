@@ -34,7 +34,7 @@ export function IPInfoPanel({ data }: IPInfoPanelProps) {
     {
       icon: Hash,
       label: t.postalCode,
-      value: data.zip || '未知',
+      value: data.zip || t.unknown,
       gradient: 'from-orange-500 to-red-500',
     },
     {
