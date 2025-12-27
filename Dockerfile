@@ -10,8 +10,12 @@ COPY package*.json ./
 # 安装依赖
 RUN npm ci --only=production=false
 
-# 复制源代码
-COPY . .
+# 设置构建参数
+ARG NEXT_PUBLIC_GA_MEASUREMENT_ID
+ENV NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID
+
+# 验证变量是否传入 (可选)
+RUN echo "Building with GA ID: $NEXT_PUBLIC_GA_MEASUREMENT_ID"
 
 # 构建应用
 RUN npm run build
