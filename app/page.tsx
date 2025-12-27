@@ -78,8 +78,9 @@ export default function Home() {
 
       if (data.success && data.data) {
         setIpData(data.data);
-        // 确保搜索框内容与查询结果同步
-        if (data.data.ip) {
+        // 仅在初始加载或查询自身 IP 时更新 currentIP (供 SearchBar 显示)
+        // 如果是手动输入的查询(域名或特定IP),保留用户在 SearchBar 中的输入,不强制覆盖
+        if (!query) {
           setCurrentIP(data.data.ip);
         }
       } else {
