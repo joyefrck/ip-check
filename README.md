@@ -72,6 +72,9 @@ docker-compose up -d --build
 
 如果你使用 1Panel 面板管理服务器，请查看详细的 [1Panel 部署指南](docs/1panel-deployment.md)。
 
+> [!TIP]
+> **线上生产环境更新**：针对目前使用的预构建镜像部署模式，请参考专业的 [生产环境更新指南](docs/PRODUCTION_DEPLOY.md)。
+
 ---
 
 ### 本地开发
