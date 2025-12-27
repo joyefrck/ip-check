@@ -15,8 +15,15 @@ interface SearchBarProps {
 
 export function SearchBar({ onSearch, loading, defaultValue }: SearchBarProps) {
   const { t } = useLanguage();
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(defaultValue || '');
   const [error, setError] = useState('');
+  const [prevDefault, setPrevDefault] = useState(defaultValue);
+
+  // 当父组件传递的 defaultValue 发生变化时，同步更新内部状态
+  if (defaultValue !== prevDefault) {
+    setQuery(defaultValue || '');
+    setPrevDefault(defaultValue);
+  }
 
   // 使用 key 属性在 defaultValue 变化时重置内部状态，而不是在 Effect 中设置状态
   // 这避免了不必要的二次渲染

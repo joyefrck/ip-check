@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { SearchBar } from '@/components/search-bar';
 import { MapView } from '@/components/map-view';
 import { IPInfoPanel } from '@/components/ip-info-panel';
@@ -49,10 +49,10 @@ export default function Home() {
     }
     
     initIPDetection();
-  }, []);
+  }, [t.networkError]); // t.networkError 作为依赖是安全的，因为翻译对象在语言切换时才会变
 
 
-  const fetchIPData = async (query?: string) => {
+  const fetchIPData = useCallback(async (query?: string) => {
     setLoading(true);
     setError('');
 
@@ -78,6 +78,10 @@ export default function Home() {
 
       if (data.success && data.data) {
         setIpData(data.data);
+        // 确保搜索框内容与查询结果同步
+        if (data.data.ip) {
+          setCurrentIP(data.data.ip);
+        }
       } else {
         setError(data.error || t.queryFailed);
       }
@@ -86,7 +90,7 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [t.networkError, t.queryFailed]);
 
   return (
     <>
@@ -99,7 +103,7 @@ export default function Home() {
             '@type': 'WebApplication',
             name: 'IP地理位置查询工具',
             description: '免费在线IP地理位置查询工具,快速查询IP地址或域名的地理位置、ISP服务商、时区等详细信息',
-            url: 'http://localhost:3000',
+            url: 'https://ipcha.org',
             applicationCategory: 'UtilityApplication',
             operatingSystem: 'All',
             offers: {
