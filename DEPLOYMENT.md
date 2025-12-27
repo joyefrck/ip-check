@@ -12,22 +12,21 @@
 
 ### 部署步骤
 
-1. **SSH 连接到服务器**
+**推荐方法：使用简化脚本（适用于已安装 docker-compose-plugin 的服务器）**
 
 ```bash
+# SSH 连接到服务器
 ssh root@你的服务器IP
+
+# 下载并执行简化部署脚本
+curl -fsSL https://raw.githubusercontent.com/joyefrck/ip-check/main/deploy-simple.sh | bash
 ```
 
-2. **下载并执行部署脚本**
+**备选方法：使用完整脚本（自动检测 Docker Compose 版本）**
 
 ```bash
-# 方法一：直接从 GitHub 下载并执行
+# 下载并执行完整部署脚本
 curl -fsSL https://raw.githubusercontent.com/joyefrck/ip-check/main/server-deploy.sh | bash
-
-# 方法二：手动下载后执行
-wget https://raw.githubusercontent.com/joyefrck/ip-check/main/server-deploy.sh
-chmod +x server-deploy.sh
-./server-deploy.sh
 ```
 
 3. **等待部署完成**
