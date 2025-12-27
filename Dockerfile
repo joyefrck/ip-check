@@ -10,6 +10,9 @@ COPY package*.json ./
 # 安装依赖
 RUN npm ci --only=production=false
 
+# 复制源代码
+COPY . .
+
 # 设置构建参数
 ARG NEXT_PUBLIC_GA_MEASUREMENT_ID
 ENV NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID
