@@ -10,11 +10,36 @@
 
 ## 部署方式
 
-### 方式一：使用 1Panel 应用商店（推荐新手）
+### 方式一：使用自动化脚本（最简单）⭐
+
+使用我们提供的自动化部署脚本，一键完成部署。
+
+#### 快速开始
+
+```bash
+# SSH 连接到服务器
+ssh root@你的服务器IP
+
+# 下载并执行部署脚本
+curl -fsSL https://raw.githubusercontent.com/joyefrck/ip-check/main/server-deploy.sh | bash
+```
+
+脚本会自动完成：
+- ✅ 环境检查（Docker、Git）
+- ✅ 从 GitHub 克隆代码到 `/opt/1panel/apps/ip-check`
+- ✅ 配置环境变量
+- ✅ 构建并启动 Docker 容器
+- ✅ 健康检查
+
+> 💡 **提示**：详细的快速部署指南请查看 [DEPLOYMENT.md](../DEPLOYMENT.md)
+
+---
+
+### 方式二：使用 1Panel 应用商店（推荐新手）
 
 如果项目已发布到 1Panel 应用商店，可以直接安装。
 
-### 方式二：使用 Docker Compose（推荐）
+### 方式三：使用 Docker Compose（手动部署）
 
 #### 步骤 1：从 GitHub 拉取项目
 
